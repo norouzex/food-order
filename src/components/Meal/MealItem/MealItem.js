@@ -1,13 +1,13 @@
 import React from "react";
 import style from "./MealItem.module.css";
 import MealForm from "./MealForm";
-const MealItem = () => {
+const MealItem = (probs) => {
   return (
     <li className={style.meal}>
       <div>
-        <h3>Sushi</h3>
-        <div className={style.description}>info</div>
-        <div className={style.price}>price</div>
+        <h3>{probs.name}</h3>
+        <div className={style.description}>{probs.info}</div>
+        <div className={style.price}>{probs.price}</div>
       </div>
       <div>
         <MealForm />
