@@ -4,7 +4,7 @@ const CartItem = (props) => {
   const price = `$${props.price.toFixed(2)}`;
 
   return (
-    <li>
+    <li className={style["cart-item"]}>
       <div>
         <h2>{props.name}</h2>
         <div className={style.summary}>

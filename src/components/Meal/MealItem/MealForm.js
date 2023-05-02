@@ -2,11 +2,9 @@ import React, { useRef, useState } from "react";
 import Input from "../../UI/Input/Input";
 import style from "./MealForm.module.css";
 
-
 const MealForm = (props) => {
   const [amountIsvalid, setIsAmountIsValid] = useState(true);
   const amountInputRef = useRef();
-
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -20,7 +18,7 @@ const MealForm = (props) => {
       setIsAmountIsValid(false);
       return;
     }
-    props.onAddToCart(enteredAmountNumber)
+    props.onAddToCart(enteredAmountNumber);
   };
 
   return (
@@ -33,7 +31,7 @@ const MealForm = (props) => {
           type: "number",
           max: "5",
           step: "1",
-          defaultValue: "0",
+          defaultValue: "1",
         }}
       />
       <button>+ Add</button>

@@ -3,6 +3,7 @@ import MainHeader from "./components/MainHeader/MainHeader";
 import Meal from "./components/Meal/Meal";
 import BasketContext from "./Store/cart-context";
 import Cart from "./components/Cart/Cart";
+import CartProvider from "./Store/CartProvider";
 
 function App() {
   const [basketAmount, setBasketAmount] = useState(0);
@@ -18,11 +19,11 @@ function App() {
     setCartIsShown(!cartIsShown);
   };
   return (
-    <React.Fragment>
+    <CartProvider>
       {cartIsShown && <Cart onClose={showCartHandler} />}
       <MainHeader amount={basketAmount} showCarts={showCartHandler} />
       <Meal onBasketChange={BasketChangeHandler} />
-    </React.Fragment>
+    </CartProvider>
   );
 }
 
