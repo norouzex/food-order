@@ -1,17 +1,17 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState } from "react";
 import Input from "../../UI/Input/Input";
 import style from "./MealForm.module.css";
-import BasketContext from "../../../Store/cart-context";
+
 
 const MealForm = (props) => {
   const [amountIsvalid, setIsAmountIsValid] = useState(true);
   const amountInputRef = useRef();
-  const basketCtx = useContext(BasketContext);
+
 
   const submitHandler = (event) => {
     event.preventDefault();
     const enteredAmount = amountInputRef.current.value;
-    const enteredAmountNumber = +enteredAmount + 1;
+    const enteredAmountNumber = +enteredAmount;
     if (
       enteredAmount.trim().length === 0 ||
       enteredAmountNumber < 1 ||
@@ -19,13 +19,8 @@ const MealForm = (props) => {
     ) {
       setIsAmountIsValid(false);
       return;
-    } else {
-      basketCtx.totalAmount += 1;
-      console.log(basketCtx.totalAmount);
-      amountInputRef.current.value = enteredAmountNumber;
-      setIsAmountIsValid(true);
-      props.onBasketChange;
     }
+    props.onAddToCart(enteredAmountNumber)
   };
 
   return (
