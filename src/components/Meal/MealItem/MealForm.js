@@ -1,10 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import Input from "../../UI/Input/Input";
 import style from "./MealForm.module.css";
+import BasketContext from "../../../Store/cart-context";
 
-const MealForm = (probs) => {
+const MealForm = (props) => {
   const [amountIsvalid, setIsAmountIsValid] = useState(true);
   const amountInputRef = useRef();
+  const basketCtx = useContext(BasketContext);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -18,10 +20,12 @@ const MealForm = (probs) => {
       setIsAmountIsValid(false);
       return;
     } else {
+      basketCtx.totalAmount += 1;
+      console.log(basketCtx.totalAmount);
       amountInputRef.current.value = enteredAmountNumber;
       setIsAmountIsValid(true);
+      props.onBasketChange;
     }
-    // amountInputRef.current.value = 12;
   };
 
   return (

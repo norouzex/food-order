@@ -30,23 +30,35 @@ const DUMMY_MEALS = [
   },
 ];
 
-const items = DUMMY_MEALS.map((meal) => (
-  <MealItem
-    key={meal.id}
-    id={meal.id}
-    name={meal.name}
-    info={meal.info}
-    price={meal.price}
-  />
-));
-
-const MealsList = () => {
+const MealsList = (props) => {
   return (
     <section className={style.meals}>
       <Card>
-        <ul>{items}</ul>
+        <ul>
+          {DUMMY_MEALS.map((meal) => (
+            <MealItem
+              key={meal.id}
+              id={meal.id}
+              name={meal.name}
+              info={meal.info}
+              price={meal.price}
+              onBasketChange={props.onBasketChange}
+            />
+          ))}
+        </ul>
       </Card>
     </section>
   );
 };
 export default MealsList;
+
+// const items = DUMMY_MEALS.map((meal) => (
+//   <MealItem
+//     key={meal.id}
+//     id={meal.id}
+//     name={meal.name}
+//     info={meal.info}
+//     price={meal.price}
+//     onBasketChange={props.onBasketChange}
+//   />
+// ));

@@ -2,11 +2,11 @@ import React from "react";
 import MealDescription from "./MealsDescription";
 import MealsList from "./MealsList";
 
-const Meal = () => {
+const Meal = (props) => {
   return (
     <React.Fragment>
       <MealDescription />
-      <MealsList />
+      <MealsList onBasketChange={props.onBasketChange()} />
     </React.Fragment>
   );
 };
