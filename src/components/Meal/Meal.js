@@ -6,7 +6,7 @@ const Meal = (props) => {
   return (
     <React.Fragment>
       <MealDescription />
-      <MealsList onBasketChange={props.onBasketChange()} />
+      <MealsList />
     </React.Fragment>
   );
 };
