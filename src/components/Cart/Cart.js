@@ -24,6 +24,18 @@ const Cart = (props) => {
     setIsCheckout(true);
   };
 
+  const submitOrderHandler = async (userData) => {
+    fetch("https://parseapi.back4app.com/classes/order", {
+      method: "POST",
+      body: JSON.stringify({ user: userData, orderItems: cartCtx.items }),
+      headers: {
+        "X-Parse-Application-Id": "honFhwdYWhAtSbsJ4TjNkeu6hs6NUPrHXBb9mXwL",
+        "X-Parse-REST-API-Key": "P8RZhjsW4oDzngOE3p7jUl5LRhwqyuV9brFg8euu",
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   const CartItems = (
     <ul className={style["cart-items"]}>
       {cartCtx.items.map((item) => (
@@ -59,7 +71,9 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={props.onClose} />}
+      {isCheckout && (
+        <Checkout onConfirm={submitOrderHandler} onCancel={props.onClose} />
+      )}
       {!isCheckout && modalActions}
     </Modal>
   );
