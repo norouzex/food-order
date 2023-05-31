@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import CartItem from "./CartItem";
 import style from "./Cart.module.css";
@@ -8,6 +8,8 @@ import Checkout from "./Checkout";
 
 const Cart = (props) => {
   const [isCheckout, setIsCheckout] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
   const cartCtx = useContext(CartContext);
   const hasItems = cartCtx.items.length > 0;
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
@@ -25,7 +27,8 @@ const Cart = (props) => {
   };
 
   const submitOrderHandler = async (userData) => {
-    fetch("https://parseapi.back4app.com/classes/order", {
+    setIsSubmitting(true);
+    await fetch("https://parseapi.back4app.com/classes/order", {
       method: "POST",
       body: JSON.stringify({ user: userData, orderItems: cartCtx.items }),
       headers: {
@@ -34,6 +37,9 @@ const Cart = (props) => {
         "Content-Type": "application/json",
       },
     });
+    setIsSubmitting(false);
+    setDidSubmit(true);
+    cartCtx.clearCart();
   };
 
   const CartItems = (
@@ -64,8 +70,21 @@ const Cart = (props) => {
     </div>
   );
 
-  return (
-    <Modal>
+  const isSubmittingModalContent = <p>Sending order data...</p>;
+  const didSubmitModalContent = (
+    <React.Fragment>
+      <p>Successfully sent the order!</p>
+      <div className={style.actions}>
+        <button className={style.button} onClick={props.onClose}>
+          close
+        </button>
+      </div>
+    </React.Fragment>
+  );
+
+  const cartModalContent = (
+    <React.Fragment>
+      {" "}
       {CartItems}
       <div className={style.total}>
         <span>Total Amount</span>
@@ -75,6 +94,14 @@ const Cart = (props) => {
         <Checkout onConfirm={submitOrderHandler} onCancel={props.onClose} />
       )}
       {!isCheckout && modalActions}
+    </React.Fragment>
+  );
+
+  return (
+    <Modal onClose={props.onClose}>
+      {!isSubmitting && !didSubmit && cartModalContent}
+      {isSubmitting && isSubmittingModalContent}
+      {!isSubmitting && didSubmit && didSubmitModalContent}
     </Modal>
   );
 };
