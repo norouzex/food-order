@@ -33,6 +33,7 @@ import Card from "../UI/Card/Card";
 const MealsList = () => {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [httpError, setHttpError] = useState(null);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -48,6 +49,9 @@ const MealsList = () => {
           },
         }
       );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
       const responseData = await response.json();
       const loadedMeals = [];
       for (const key in responseData["results"]) {
@@ -62,12 +66,31 @@ const MealsList = () => {
       setMeals(loadedMeals);
       setIsLoading(false);
     };
-    fetchMeals();
+    /* Need to be await */
+    // try {
+    //   fetchMeals();
+    // } catch (error) {
+    //   setIsLoading(false);
+    //   setHttpError(error.message);
+    // }
+
+    fetchMeals().catch((error) => {
+      setIsLoading(false);
+      setHttpError(error.message);
+    });
   }, []);
   if (isLoading) {
     return (
       <section className={style.MealsLoading}>
         <p>Loading ...</p>
+      </section>
+    );
+  }
+
+  if (httpError) {
+    return (
+      <section className={style.MealsError}>
+        <p>{httpError}</p>
       </section>
     );
   }
